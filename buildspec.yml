@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: latest
+  pre_build:
+    commands:
+      - docker version > dc
+      - echo "we use docker `cat dc`"
+      - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 663539312099.dkr.ecr.eu-central-1.amazonaws.com
+      - REPO=dev-repo
+      - TAG=663539312099.dkr.ecr.eu-central-1.amazonaws.com/dev-repo
+      - echo "Let's go to the next phase"
+  build:
+    commands:
+      - echo Build started on `date`
+      - docker build -t $REPO .
+      - docker tag $REPO:latest $TAG:latest
+  post_build:
+    commands:
+      - echo Build completed on `date` 
+      - docker push $TAG:latest
+      - printf '[{"name":"httpdappTD","imageUri":"663539312099.dkr.ecr.eu-central-1.amazonaws.com/dev-repo:latest"}]' > imagedefinitions.json
+artifacts:
+  files:
+    - imagedefinitions.json
