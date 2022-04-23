@@ -21,7 +21,7 @@ phases:
     commands:
       - echo Build completed on `date` 
       - docker push $TAG:latest
-      - printf '[{"name":"httpdappTD","imageUri":"663539312099.dkr.ecr.eu-central-1.amazonaws.com/dev-repo:latest"}]' > imagedefinitions.json
+      - printf '[{"name":"tdfamily","imageUri":"663539312099.dkr.ecr.eu-central-1.amazonaws.com/dev-repo:latest"}]' > imagedefinitions.json
 artifacts:
   files:
     - imagedefinitions.json
